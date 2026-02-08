@@ -15,7 +15,7 @@ The application follows a **3-Layer Architecture** (A.N.T.) ensuring separation 
 
 ```mermaid
 graph TD
-    User[User / QA Engineer] -->|Paste Java Code| UI[Web Interface (HTML/JS)]
+    User[User / QA Engineer] -->|Paste Java Code| UI[Web Interface HTML/JS]
     UI -->|POST /api/convert| API[FastAPI Server]
     
     subgraph "Local Execution Environment"
