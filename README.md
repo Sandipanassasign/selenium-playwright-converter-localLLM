@@ -1,84 +1,132 @@
-# Selenium ➜ Playwright Converter (Local AI)
+# Selenium ➜ Playwright Converter (Local AI) 🚀
 
-A secure, local-first tool to convert legacy **Selenium Java (TestNG)** code into modern **Playwright TypeScript**. Powered by **Ollama** and **Llama 3.2**.
+A secure, privacy-focused tool to modernize your legacy **Selenium Java** test automation by converting it to **Playwright TypeScript**. Powered by local Large Language Models (LLM) via **Ollama**.
 
-![Status](https://img.shields.io/badge/Status-Active-success)
-![AI](https://img.shields.io/badge/AI-Local_Ollama-orange)
+![Status](https://img.shields.io/badge/Status-Active-success?style=flat-square)
+![Stack](https://img.shields.io/badge/Stack-Python_FastAPI-blue?style=flat-square)
+![AI](https://img.shields.io/badge/AI-Llama_3.2_%7C_Qwen_2.5-orange?style=flat-square)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
-## 🚀 Features
+---
 
-*   **Zero Data Leakage**: Runs 100% locally. Your code never leaves your machine.
-*   **Smart Conversion**: Uses Llama 3.2 to understand logic, not just regex.
-*   **Modern UI**: Glassmorphism design with Dark Mode.
-*   **Real-time Status**: Live indicator for Ollama connectivity.
-*   **Flexible Input**: Converts any Java Selenium code (TestNG, JUnit, or main methods).
+## 🏗️ Architecture
+
+The application follows a **3-Layer Architecture** (A.N.T.) ensuring separation of concerns:
+
+```mermaid
+graph TD
+    User[User / QA Engineer] -->|Paste Java Code| UI[Web Interface (HTML/JS)]
+    UI -->|POST /api/convert| API[FastAPI Server]
+    
+    subgraph "Local Execution Environment"
+        API -->|1. Construct Prompt| Logic[Converter Logic]
+        Logic -->|2. Inference Request| Ollama[Ollama LLM Server]
+        Ollama -->|3. Streaming Response| Logic
+        Logic -->|4. Extract Code Block| API
+    end
+    
+    API -->|Return TypeScript| UI
+    
+    subgraph "Models"
+        Ollama -.->|Option A| Llama[Llama 3.2]
+        Ollama -.->|Option B| Qwen[Qwen 2.5 Coder]
+    end
+```
+
+## ✨ Features
+
+*   🔒 **100% Local & Secure**: Your code never leaves your machine. No API keys, no cloud data leaks.
+*   🧠 **Context-Aware Conversion**: Uses AI to understand test logic, converting explicit waits to auto-waiting locators.
+*   ⚡ **High Performance**: Optimized for speed with **Qwen 2.5 Coder** (1.5B) model support.
+*   🎨 **Modern Interface**: Clean, glassmorphism UI with Dark Mode.
+*   🚦 **Live Status**: Real-time health check for your local AI server.
+*   📝 **Flexible Input**: Supports TestNG, JUnit, or raw Selenium main methods.
+
+---
 
 ## 🛠️ Prerequisites
 
-1.  **Ollama**: [Download Ollama](https://ollama.com/)
-2.  **Models**:
+1.  **Ollama**: [Download & Install](https://ollama.com/)
+2.  **Pull AI Models**:
     ```bash
-    # For fastest performance (Recommended)
+    # Recommended (Fast & Accurate)
     ollama run qwen2.5-coder:1.5b
     
-    # Optional: Balanced model
+    # Optional (Balanced)
     ollama run llama3.2
     ```
-3.  **Python 3.10+**
+3.  **Python 3.10+** (Recommended)
 
-## 📦 Installation
+---
 
-Clone this repository and run the setup script:
+## 📦 Installation & Setup
+
+Clone the repository and run the startup script. It handles everything:
 
 ```bash
-# 1. give permission to scripts
+# 1. Clone the repo
+git clone https://github.com/Sandipanassasign/selenium-playwright-converter-localLLM.git
+cd selenium-playwright-converter-localLLM
+
+# 2. Make scripts executable
 chmod +x start.sh stop.sh
 
-# 2. Run the start script (Installs dependencies automatically)
+# 3. Start the Application
 ./start.sh
 ```
+> **What `start.sh` does:** Creates a Python virtual environment, installs dependencies (`fastapi`, `uvicorn`, `requests`), and launches the server on port `8000`.
 
-## 🏃‍♂️ Usage
+---
+
+## 🏃‍♂️ Usage Guide
 
 1.  Open **http://localhost:8000** in your browser.
-2.  **Source Box (Left)**: Paste your Selenium Java method (must include `@Test`).
-3.  Click **Generic Convert**.
-4.  **Output Box (Right)**: Copy the generated Playwright code.
+2.  **Select Model**: Choose "Qwen 2.5 Coder" for speed or "Llama 3.2" for complex logic.
+3.  **Paste Code**: Input your Selenium Java code in the left panel.
+    ```java
+    @Test
+    public void testLogin() {
+        driver.findElement(By.id("user")).sendKeys("admin");
+        driver.findElement(By.id("pass")).sendKeys("secret");
+        driver.findElement(By.cssSelector("button.login")).click();
+        Assert.assertEquals(driver.getTitle(), "Dashboard");
+    }
+    ```
+4.  **Click Convert**: The AI will process it instantly.
+5.  **Copy Result**: Get your clean Playwright TypeScript code.
+    ```typescript
+    test('testLogin', async ({ page }) => {
+        await page.getByLabel('Username').fill('admin'); // Intelligent locator mapping
+        await page.getByLabel('Password').fill('secret');
+        await page.locator('button.login').click();
+        await expect(page).toHaveTitle('Dashboard');
+    });
+    ```
 
-### Example Input
-```java
-@Test
-public void loginTest() {
-    driver.findElement(By.id("user")).sendKeys("admin");
-    driver.findElement(By.id("login")).click();
-}
-```
+---
 
-### Example Output
-```typescript
-test('loginTest', async ({ page }) => {
-    await page.getByLabel('user').fill('admin');
-    await page.locator('#login').click();
-});
-```
+## 🛑 Management
 
-## 🛑 Stopping the Server
-
-To stop the server and free up port 8000:
-
+To stop the server and free up the port:
 ```bash
 ./stop.sh
 ```
 
 ## 🔧 Troubleshooting
 
-*   **"Ollama Offline"**: Ensure Ollama is running (`ollama serve`).
-*   **"Processing..." hangs**: Try refreshing. If your file is huge (>500 lines), split it into smaller chunks.
-*   **"Address already in use"**: Run `./stop.sh` then `./start.sh`.
+| Issue | Solution |
+| :--- | :--- |
+| **"Ollama Offline"** | Make sure Ollama is running (`ollama serve`). |
+| **"Model not found"** | Run `ollama pull qwen2.5-coder:1.5b` in your terminal. |
+| **Port 8000 in use** | Run `./stop.sh` then `./start.sh`. |
+| **Conversion Hangs** | Refresh the page. If the file is massive (>500 lines), split it up. |
 
-## 📂 Project Structure
+---
 
-*   `server.py`: FastAPI backend.
-*   `tools/`: Core AI logic & file operations.
-*   `static/`: Frontend (HTML/CSS/JS).
-*   `architecture/`: System prompts & SOPs.
+## 🤝 Contributing
+
+Contributions are welcome! Please fork the repo and submit a Pull Request.
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
