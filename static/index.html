@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selenium ➜ Playwright Generator</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-glow"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <span class="selenium">Selenium</span>
+                <span class="arrow">➜</span>
+                <span class="playwright">Playwright</span>
+            </div>
+            <p class="subtitle">Convert Java TestNG to Modern TypeScript with Local AI</p>
+            <div id="ollama-status" class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking Ollama...</span>
+            </div>
+        </header>
+
+        <main class="converter-box">
+            <div class="editor-section">
+                <div class="editor-header">
+                    <span class="badge java">JAVA (SELENIUM)</span>
+                    <button id="paste-btn" class="icon-btn" title="Paste Code">📋 Paste</button>
+                </div>
+                <textarea id="source-code" placeholder="// Paste your Selenium Java code here...
+@Test
+public void testLogin() {
+    driver.findElement(By.id('login')).click();
+}"></textarea>
+            </div>
+
+            <div class="middle-section">
+                <div class="model-selector">
+                    <label for="model-select">Model:</label>
+                    <select id="model-select">
+                        <option value="qwen2.5-coder:1.5b" selected>Qwen 2.5 Coder (1.5B) - 🚀 Fastest</option>
+                        <option value="llama3.2">Llama 3.2 (3B) - Balanced</option>
+                        <option value="codellama">CodeLlama (7B) - Heavy</option>
+                    </select>
+                </div>
+                <button id="convert-btn" class="cta-btn">
+                    <span class="btn-text">Generic Convert</span>
+                    <span class="btn-icon">⚡</span>
+                </button>
+                <div id="loader" class="hidden">
+                    <div class="spinner"></div>
+                    <span>Processing with Local AI...</span>
+                </div>
+            </div>
+
+            <div class="editor-section">
+                <div class="editor-header">
+                    <span class="badge ts">TYPESCRIPT (PLAYWRIGHT)</span>
+                    <button id="copy-btn" class="icon-btn" title="Copy Code">📋 Copy</button>
+                </div>
+                <textarea id="output-code" readonly placeholder="// Playwright code will appear here..."></textarea>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by <span class="highlight">Ollama</span> & <span class="highlight">CodeLlama</span></p>
+        </footer>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+
+</html>
